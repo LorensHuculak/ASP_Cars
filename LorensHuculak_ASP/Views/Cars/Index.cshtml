@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<VehiclistTest.Models.Car>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Cars";
 }
 
-<h2>Index</h2>
+<h2>Cars</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,20 +12,16 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Color)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PurchaseDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LicensePlate)
-                </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.CarType)
+                @Html.DisplayNameFor(model => model.LicensePlate)
             </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Owner)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarType)
             </th>
             <th></th>
         </tr>
@@ -33,21 +29,17 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Color)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PurchaseDate)
-            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.LicensePlate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CarType.CarTypeID)
+                @Html.DisplayFor(modelItem => item.Owner.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Owner.OwnerID)
+                @Html.DisplayFor(modelItem => item.CarType.FullBrand)
             </td>
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CarID">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.CarID">Details</a> |

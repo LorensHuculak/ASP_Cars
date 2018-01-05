@@ -63,8 +63,8 @@ namespace LorensHuculak_ASP.Controllers
         // GET: Cars/Create
         public IActionResult Create()
         {
-            ViewData["CarTypeID"] = new SelectList(_context.Set<CarType>(), "CarTypeID", "CarTypeID");
-            ViewData["OwnerID"] = new SelectList(_context.Set<Owner>(), "OwnerID", "OwnerID");
+            ViewData["CarTypeID"] = new SelectList(_context.Set<CarType>(), "CarTypeID", "FullBrand");
+            ViewData["OwnerID"] = new SelectList(_context.Set<Owner>(), "OwnerID", "FullName");
             return View();
         }
 
@@ -81,8 +81,8 @@ namespace LorensHuculak_ASP.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarTypeID"] = new SelectList(_context.Set<CarType>(), "CarTypeID", "CarTypeID", car.CarTypeID);
-            ViewData["OwnerID"] = new SelectList(_context.Set<Owner>(), "OwnerID", "OwnerID", car.OwnerID);
+            ViewData["CarTypeID"] = new SelectList(_context.Set<CarType>(), "CarTypeID", "FullBrand", car.CarTypeID);
+            ViewData["OwnerID"] = new SelectList(_context.Set<Owner>(), "OwnerID", "FullName", car.OwnerID);
             return View(car);
         }
 
@@ -99,8 +99,8 @@ namespace LorensHuculak_ASP.Controllers
             {
                 return NotFound();
             }
-            ViewData["CarTypeID"] = new SelectList(_context.Set<CarType>(), "CarTypeID", "CarTypeID", car.CarTypeID);
-            ViewData["OwnerID"] = new SelectList(_context.Set<Owner>(), "OwnerID", "OwnerID", car.OwnerID);
+            ViewData["CarTypeID"] = new SelectList(_context.Set<CarType>(), "CarTypeID", "FullBrand", car.CarTypeID);
+            ViewData["OwnerID"] = new SelectList(_context.Set<Owner>(), "OwnerID", "FullName", car.OwnerID);
             return View(car);
         }
 
@@ -136,8 +136,8 @@ namespace LorensHuculak_ASP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarTypeID"] = new SelectList(_context.Set<CarType>(), "CarTypeID", "CarTypeID", car.CarTypeID);
-            ViewData["OwnerID"] = new SelectList(_context.Set<Owner>(), "OwnerID", "OwnerID", car.OwnerID);
+            ViewData["CarTypeID"] = new SelectList(_context.Set<CarType>(), "CarTypeID", "FullBrand", car.CarTypeID);
+            ViewData["OwnerID"] = new SelectList(_context.Set<Owner>(), "OwnerID", "FullName", car.OwnerID);
             return View(car);
         }
 
