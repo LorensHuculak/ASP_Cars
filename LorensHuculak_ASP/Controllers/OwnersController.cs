@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LorensHuculak_ASP.Models;
-using VehiclistTest.Models;
+using LorensHuculak_ASP.ViewModels;
 
 namespace LorensHuculak_ASP.Controllers
 {

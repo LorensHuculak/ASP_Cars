@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace VehiclistTest.Models
+namespace LorensHuculak_ASP.Models
 {
     public class Owner
     {

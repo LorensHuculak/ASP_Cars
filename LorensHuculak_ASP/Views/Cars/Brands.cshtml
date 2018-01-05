@@ -1,4 +1,4 @@
-﻿@model IEnumerable<VehiclistTest.Models.Car>
+﻿@model IEnumerable<LorensHuculak_ASP.Models.Car>
 
 @{
     ViewData["Title"] = "Brands";
@@ -9,51 +9,50 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
+
+@foreach (var brand in Model)
+{
+    <table class="table">
+        <thead>
+            <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Color)
+                    @Html.DisplayFor(brandItem => brand.CarType.FullBrand)
                 </th>
+
+            </tr>
+            <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.PurchaseDate)
+                    @Html.DisplayNameFor(brandItem => brand.LicensePlate)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LicensePlate)
-                </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CarType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Owner)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Color)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PurchaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LicensePlate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CarType.CarTypeID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owner.OwnerID)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CarID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CarID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CarID">Delete</a>
-            </td>
-        </tr>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Color)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PurchaseDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LicensePlate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CarType.CarTypeID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Owner.OwnerID)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.CarID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.CarID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.CarID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>

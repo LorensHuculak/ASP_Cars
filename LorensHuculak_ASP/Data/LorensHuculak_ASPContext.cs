@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using VehiclistTest.Models;
+using LorensHuculak_ASP.Models;
 
 namespace LorensHuculak_ASP.Models
 {
@@ -14,10 +14,10 @@ namespace LorensHuculak_ASP.Models
         {
         }
 
-        public DbSet<VehiclistTest.Models.Car> Car { get; set; }
+        public DbSet<LorensHuculak_ASP.Models.Car> Car { get; set; }
 
-        public DbSet<VehiclistTest.Models.CarType> CarType { get; set; }
+        public DbSet<LorensHuculak_ASP.Models.CarType> CarType { get; set; }
 
-        public DbSet<VehiclistTest.Models.Owner> Owner { get; set; }
+        public DbSet<LorensHuculak_ASP.Models.Owner> Owner { get; set; }
     }
 }
