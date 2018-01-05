@@ -15,5 +15,9 @@ namespace LorensHuculak_ASP.Models
         }
 
         public DbSet<VehiclistTest.Models.Car> Car { get; set; }
+
+        public DbSet<VehiclistTest.Models.CarType> CarType { get; set; }
+
+        public DbSet<VehiclistTest.Models.Owner> Owner { get; set; }
     }
 }
