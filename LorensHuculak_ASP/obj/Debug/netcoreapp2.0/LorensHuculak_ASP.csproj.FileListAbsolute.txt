@@ -1,0 +1,11 @@
+C:\xampp\htdocs\checklist\ASP_Cars\LorensHuculak_ASP\bin\Debug\netcoreapp2.0\LorensHuculak_ASP.deps.json
+C:\xampp\htdocs\checklist\ASP_Cars\LorensHuculak_ASP\bin\Debug\netcoreapp2.0\LorensHuculak_ASP.runtimeconfig.json
+C:\xampp\htdocs\checklist\ASP_Cars\LorensHuculak_ASP\bin\Debug\netcoreapp2.0\LorensHuculak_ASP.runtimeconfig.dev.json
+C:\xampp\htdocs\checklist\ASP_Cars\LorensHuculak_ASP\bin\Debug\netcoreapp2.0\LorensHuculak_ASP.dll
+C:\xampp\htdocs\checklist\ASP_Cars\LorensHuculak_ASP\obj\Debug\netcoreapp2.0\LorensHuculak_ASP.csprojResolveAssemblyReference.cache
+C:\xampp\htdocs\checklist\ASP_Cars\LorensHuculak_ASP\obj\Debug\netcoreapp2.0\LorensHuculak_ASP.csproj.CoreCompileInputs.cache
+C:\xampp\htdocs\checklist\ASP_Cars\LorensHuculak_ASP\obj\Debug\netcoreapp2.0\LorensHuculak_ASP.AssemblyInfoInputs.cache
+C:\xampp\htdocs\checklist\ASP_Cars\LorensHuculak_ASP\obj\Debug\netcoreapp2.0\LorensHuculak_ASP.AssemblyInfo.cs
+C:\xampp\htdocs\checklist\ASP_Cars\LorensHuculak_ASP\bin\Debug\netcoreapp2.0\LorensHuculak_ASP.pdb
+C:\xampp\htdocs\checklist\ASP_Cars\LorensHuculak_ASP\obj\Debug\netcoreapp2.0\LorensHuculak_ASP.dll
+C:\xampp\htdocs\checklist\ASP_Cars\LorensHuculak_ASP\obj\Debug\netcoreapp2.0\LorensHuculak_ASP.pdb

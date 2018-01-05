@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using LorensHuculak_ASP.Models;
 
 namespace LorensHuculak_ASP
 {
@@ -22,6 +24,9 @@ namespace LorensHuculak_ASP
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddDbContext<LorensHuculak_ASPContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("LorensHuculak_ASPContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
