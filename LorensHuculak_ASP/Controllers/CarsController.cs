@@ -26,6 +26,20 @@ namespace LorensHuculak_ASP.Controllers
             return View(await lorensHuculak_ASPContext.ToListAsync());
         }
 
+        // GET: Cars
+        public async Task<IActionResult> Brands()
+        {
+            var lorensHuculak_ASPContext = _context.Car.Include(c => c.CarType).Include(c => c.Owner);
+            return View(await lorensHuculak_ASPContext.ToListAsync());
+        }
+
+        // GET: Cars
+        public async Task<IActionResult> Owners()
+        {
+            var lorensHuculak_ASPContext = _context.Car.Include(c => c.CarType).Include(c => c.Owner);
+            return View(await lorensHuculak_ASPContext.ToListAsync());
+        }
+
         // GET: Cars/Details/5
         public async Task<IActionResult> Details(int? id)
         {
