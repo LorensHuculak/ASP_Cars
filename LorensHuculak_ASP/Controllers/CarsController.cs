@@ -6,174 +6,121 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LorensHuculak_ASP.Models;
+using LorensHuculak_ASP.Services;
+using LorensHuculak_ASP.ViewModels;
 
 namespace LorensHuculak_ASP.Controllers
 {
     public class CarsController : Controller
     {
-        private readonly LorensHuculak_ASPContext _context;
+        private readonly IDatabaseService dbService;
 
-        public CarsController(LorensHuculak_ASPContext context)
+        public CarsController(IDatabaseService db)
         {
-            _context = context;
+            dbService = db;
         }
 
         // GET: Cars
-        public async Task<IActionResult> Index()
+        [HttpGet("/cars")]
+        public IActionResult Index()
         {
-            var lorensHuculak_ASPContext = _context.Car.Include(c => c.CarType).Include(c => c.Owner);
-            return View(await lorensHuculak_ASPContext.ToListAsync());
+            var model = new CarListViewModel { Cars = new List<CarViewModel>() };
+            model.Cars.AddRange(dbService.AllCars().Select(ConvertToVM).ToList());
+            return View(model);
         }
 
-        // GET: Cars
-        public async Task<IActionResult> Brands()
+        [HttpGet("/edit/{id}")]
+        public IActionResult Details([FromRoute] int id)
         {
-            var lorensHuculak_ASPContext = _context.Car.Include(c => c.CarType).Include(c => c.Owner);
-            return View(await lorensHuculak_ASPContext.ToListAsync());
-        }
+            EditViewModel model;
 
-        // GET: Cars
-        public async Task<IActionResult> Owners()
-        {
-            var lorensHuculak_ASPContext = _context.Car.Include(c => c.CarType).Include(c => c.Owner);
-            return View(await lorensHuculak_ASPContext.ToListAsync());
-        }
+            var car = dbService.GetCarById(id);
 
-        // GET: Cars/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var car = await _context.Car
-                .Include(c => c.CarType)
-                .Include(c => c.Owner)
-                .SingleOrDefaultAsync(m => m.CarID == id);
             if (car == null)
             {
-                return NotFound();
-            }
-
-            return View(car);
-        }
-
-        // GET: Cars/Create
-        public IActionResult Create()
-        {
-            ViewData["CarTypeID"] = new SelectList(_context.Set<CarType>(), "CarTypeID", "FullBrand");
-            ViewData["OwnerID"] = new SelectList(_context.Set<Owner>(), "OwnerID", "FullName");
-            return View();
-        }
-
-        // POST: Cars/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CarID,Color,PurchaseDate,LicensePlate,CarTypeID,OwnerID")] Car car)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(car);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CarTypeID"] = new SelectList(_context.Set<CarType>(), "CarTypeID", "FullBrand", car.CarTypeID);
-            ViewData["OwnerID"] = new SelectList(_context.Set<Owner>(), "OwnerID", "FullName", car.OwnerID);
-            return View(car);
-        }
-
-        // GET: Cars/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var car = await _context.Car.SingleOrDefaultAsync(m => m.CarID == id);
-            if (car == null)
-            {
-                return NotFound();
-            }
-            ViewData["CarTypeID"] = new SelectList(_context.Set<CarType>(), "CarTypeID", "FullBrand", car.CarTypeID);
-            ViewData["OwnerID"] = new SelectList(_context.Set<Owner>(), "OwnerID", "FullName", car.OwnerID);
-            return View(car);
-        }
-
-        // POST: Cars/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CarID,Color,PurchaseDate,LicensePlate,CarTypeID,OwnerID")] Car car)
-        {
-            if (id != car.CarID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                model = new EditViewModel
                 {
-                    _context.Update(car);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CarExists(car.CarID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                    Id = 0,
+                    Plate = "",
+                    PurchaseDate = DateTime.Now,
+                    Owner = "",
+                    OwnerId = 0,
+                    Brand = "",
+                    BrandId = 0
+                };
             }
-            ViewData["CarTypeID"] = new SelectList(_context.Set<CarType>(), "CarTypeID", "FullBrand", car.CarTypeID);
-            ViewData["OwnerID"] = new SelectList(_context.Set<Owner>(), "OwnerID", "FullName", car.OwnerID);
-            return View(car);
-        }
-
-        // GET: Cars/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+            else
             {
-                return NotFound();
+                model = ConvertToEdit(car);
             }
 
-            var car = await _context.Car
-                .Include(c => c.CarType)
-                .Include(c => c.Owner)
-                .SingleOrDefaultAsync(m => m.CarID == id);
-            if (car == null)
+            model.Owners = dbService.AllOwners().Select(x => new SelectListItem
             {
-                return NotFound();
+                Text = x.FullName,
+                Value = x.Id.ToString()
+            }).ToList();
+
+            model.CarTypes = dbService.AllCarTypes().Select(x => new SelectListItem
+            {
+                Text = x.FullBrand,
+                Value = x.Id.ToString()
+            }).ToList();
+
+            return View(model);
+        }
+        
+        [HttpPost("/save-car")]
+        public IActionResult Save([FromForm] EditViewModel form)
+        {
+            Car car;
+            if (form.Id == 0)
+            {
+                car = new Car();
+            } else {
+                car = dbService.GetCarById(form.Id);
             }
 
-            return View(car);
+            car.LicensePlate = form.Plate;
+            car.Owner = dbService.GetOwnerById((int)form.OwnerId.Value);
+            car.CarType = dbService.GetCarTypeById((int)form.BrandId.Value);
+            dbService.SaveCar(car);
+
+            return Redirect("/Cars");
         }
 
-        // POST: Cars/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpGet("/delete/{id}")]
+        public IActionResult Delete([FromRoute] int id)
         {
-            var car = await _context.Car.SingleOrDefaultAsync(m => m.CarID == id);
-            _context.Car.Remove(car);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            dbService.DeleteCar(id);
+            return Redirect("/Cars");
         }
 
-        private bool CarExists(int id)
+        protected CarViewModel ConvertToVM(Car car)
         {
-            return _context.Car.Any(e => e.CarID == id);
+            return new CarViewModel()
+            {
+                Id = car.Id,
+                Plate = car.LicensePlate,
+                Owner = car.Owner.FullName,
+                Brand = car.CarType.FullBrand,
+                BrandName = car.CarType.Brand,
+                Model = car.CarType.Model
+
+            };
+        }
+
+        protected EditViewModel ConvertToEdit(Car car)
+        {
+            return new EditViewModel
+            {
+                Id = car.Id,
+                Plate = car.LicensePlate,
+                PurchaseDate = car.PurchaseDate,
+                Owner = car.Owner.FullName,
+                OwnerId = car.Owner.Id,
+                Brand = car.CarType.FullBrand,
+                BrandId = car.CarType.Id
+            };
         }
     }
 }

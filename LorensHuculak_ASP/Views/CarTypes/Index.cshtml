@@ -1,41 +1,57 @@
-﻿@model IEnumerable<LorensHuculak_ASP.Models.CarType>
+﻿@model CarTypeListViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Brands";
 }
-
-<h2>Index</h2>
-
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="addbtn whitespace" asp-controller="Cars" asp-action="Detail" asp-route-id="0">Add Car</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Brand)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Model)
-                </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Brand)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CarTypeID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CarTypeID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CarTypeID">Delete</a>
-            </td>
-        </tr>
+<h2 class="whitespace">Brands</h2>
+
+
+
+@foreach (var item in Model.CarTypes)
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+              
+              <h4 class="whitespace"> @Html.DisplayFor(modelItem => item.Brand)</h4>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr>
+
+
+                <th>License Plate</th>
+                <th>Owner</th>
+                <th></th>
+                <th></th>
+
+            </tr>
+
+            <tr>
+                @foreach (var car in item.Cars)
+        {
+            <tr>
+
+                <td>@Html.DisplayFor(carItem => car.Plate)</td>
+                <td>@Html.DisplayFor(carItem => car.Owner)</td>
+
+                <td>
+                    <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id">Edit</a>
+                </td>
+                <td>
+                    <a class="delbtn" asp-controller="Cars" asp-action="Delete" asp-route-id="@car.Id">Delete</a>
+                </td>
+            </tr>
 }
-    </tbody>
-</table>
+           
+            </tbody>
+
+
+    </table>
+}

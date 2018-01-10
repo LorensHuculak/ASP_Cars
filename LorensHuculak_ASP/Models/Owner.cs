@@ -8,7 +8,7 @@ namespace LorensHuculak_ASP.Models
 {
     public class Owner
     {
-        public int OwnerID { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string FirstName { get; set; }
 
@@ -19,6 +19,6 @@ namespace LorensHuculak_ASP.Models
                 return FirstName + " " + Name;
             }
         }
-        public virtual ICollection<Car> Cars { get; set; }
+        public virtual List<Car> Cars { get; set; }
     }
 }

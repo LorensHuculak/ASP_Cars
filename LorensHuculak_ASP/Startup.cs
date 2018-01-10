@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using LorensHuculak_ASP.Models;
+using LorensHuculak_ASP.DB;
+using LorensHuculak_ASP.Services;
 
 namespace LorensHuculak_ASP
 {
@@ -23,14 +25,15 @@ namespace LorensHuculak_ASP
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
 
-            services.AddDbContext<LorensHuculak_ASPContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("LorensHuculak_ASPContext")));
+            services.AddDbContext<EntityContext>(options =>
+                    options.UseSqlite("Filename=asp.db"));
+            services.AddScoped<IDatabaseService, DatabaseService>();
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, EntityContext entityContext)
         {
             if (env.IsDevelopment())
             {
@@ -43,6 +46,7 @@ namespace LorensHuculak_ASP
             }
 
             app.UseStaticFiles();
+            Create.CreateDatabase(entityContext);
 
             app.UseMvc(routes =>
             {

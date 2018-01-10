@@ -7,147 +7,52 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LorensHuculak_ASP.Models;
 using LorensHuculak_ASP.ViewModels;
+using LorensHuculak_ASP.Services;
 
 namespace LorensHuculak_ASP.Controllers
 {
     public class OwnersController : Controller
     {
-        private readonly LorensHuculak_ASPContext _context;
+        private readonly IDatabaseService dbService;
 
-        public OwnersController(LorensHuculak_ASPContext context)
+        public OwnersController(IDatabaseService db)
         {
-            _context = context;
+            dbService = db;
         }
 
-        // GET: Owners
-        public async Task<IActionResult> Index()
+        // GET: CarTypes
+        public IActionResult Index()
         {
-            return View(await _context.Owner.ToListAsync());
+            var model = new OwnerListViewModel { Owners = new List<OwnerViewModel>() };
+            model.Owners.AddRange(dbService.AllOwnersWithCars().Select(ConvertToOwner).ToList());
+            return View(model);
         }
 
-        // GET: Owners/Details/5
-        public async Task<IActionResult> Details(int? id)
+        protected OwnerViewModel ConvertToOwner(Owner owner)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var cars = new List<CarViewModel>();
+            cars.AddRange(owner.Cars.Select(ConvertToCar).ToList());
 
-            var owner = await _context.Owner
-                .SingleOrDefaultAsync(m => m.OwnerID == id);
-            if (owner == null)
+            return new OwnerViewModel
             {
-                return NotFound();
-            }
-
-            return View(owner);
+                Id = owner.Id,
+                FullName = owner.FullName,
+                Cars = cars
+            };
         }
 
-        // GET: Owners/Create
-        public IActionResult Create()
+        protected CarViewModel ConvertToCar(Car car)
         {
-            return View();
-        }
-
-        // POST: Owners/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OwnerID,Name,FirstName")] Owner owner)
-        {
-            if (ModelState.IsValid)
+            return new CarViewModel()
             {
-                _context.Add(owner);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(owner);
-        }
+                Id = car.Id,
+                Plate = car.LicensePlate,
+                Owner = car.Owner.FullName,
+                Brand = car.CarType.FullBrand,
+                BrandName = car.CarType.Brand,
+                Model = car.CarType.Model
 
-        // GET: Owners/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var owner = await _context.Owner.SingleOrDefaultAsync(m => m.OwnerID == id);
-            if (owner == null)
-            {
-                return NotFound();
-            }
-            return View(owner);
-        }
-
-        // POST: Owners/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OwnerID,Name,FirstName")] Owner owner)
-        {
-            if (id != owner.OwnerID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(owner);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OwnerExists(owner.OwnerID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(owner);
-        }
-
-        // GET: Owners/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var owner = await _context.Owner
-                .SingleOrDefaultAsync(m => m.OwnerID == id);
-            if (owner == null)
-            {
-                return NotFound();
-            }
-
-            return View(owner);
-        }
-
-        // POST: Owners/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var owner = await _context.Owner.SingleOrDefaultAsync(m => m.OwnerID == id);
-            _context.Owner.Remove(owner);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool OwnerExists(int id)
-        {
-            return _context.Owner.Any(e => e.OwnerID == id);
+            };
         }
     }
 }

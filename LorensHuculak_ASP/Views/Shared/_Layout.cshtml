@@ -14,6 +14,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/font-awesome-4.7.0/css/font-awesome.min.css" asp-append-version="true" />
     </environment>
 </head>
 <body>
@@ -31,8 +32,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Cars" asp-action="Index">Cars</a></li>
-                    <li><a asp-area="" asp-controller="Cars" asp-action="Brands">Brands</a></li>
-                    <li><a asp-area="" asp-controller="Cars" asp-action="Owners">Owners</a></li>
+                    <li><a asp-area="" asp-controller="CarTypes" asp-action="Index">Brands</a></li>
+                    <li><a asp-area="" asp-controller="Owners" asp-action="Index">Owners</a></li>
                 </ul>
             </div>
         </div>
@@ -40,7 +41,7 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
+        <footer class="whitespace">
             <p>&copy; 2018 - Lorens Huculak</p>
         </footer>
     </div>

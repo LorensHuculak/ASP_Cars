@@ -1,48 +1,42 @@
-﻿@model LorensHuculak_ASP.Models.Car
-
+﻿@model EditViewModel
 @{
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2 class="whitespace">Car Details</h2>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <form asp-controller="Cars" asp-action="Save" method="post">
+                <input type="hidden" asp-for="Id" />
 
-<div>
-    <h4>Car</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Color)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Color)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PurchaseDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PurchaseDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LicensePlate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LicensePlate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CarType)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CarType.FullBrand)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Owner)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Owner.FullName)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.CarID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                <div class="form-group">
+                    <label asp-for="Plate">License Plate</label>
+                    <br />
+                    <input type="text" asp-for="Plate" placeholder="License plate." />
+                    <span asp-validation-for="Plate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PurchaseDate">Date of Purchase</label>
+                    <br />
+                    <input type="date" asp-for="PurchaseDate" />
+                    <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Owner">Owner</label>
+                    <br />
+                    <select asp-for="OwnerId" asp-items="Model.Owners"></select>
+                    <span asp-validation-for="Owner" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Brand">Brand</label>
+                    <br />
+                    <select asp-for="BrandId" asp-items="Model.CarTypes"></select>
+                    <span asp-validation-for="Brand" class="text-danger"></span>
+                </div>
+                <input class="savebtn" type="submit" value="Save Info"  />
+            </form>
+        </div>
+    </div>
 </div>
